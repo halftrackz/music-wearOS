@@ -37,7 +37,7 @@ To get the best performance, it is highly recommended to build and run the app i
 ### Prerequisites
 * [Android Studio Koala](https://developer.android.com/studio) or newer.
 * Android SDK Platform 30+.
-* A Wear OS device (e.g., Galaxy Watch 4/5/6/7) with **Wireless Debugging** enabled.
+* A Wear OS device (eg. Samsung Galaxy Watch 4+ Original Pixel Watch+) with **Wireless Debugging** enabled.
 
 ---
 
