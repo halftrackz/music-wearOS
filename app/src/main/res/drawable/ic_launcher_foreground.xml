@@ -1,0 +1,10 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Stylized Music Note inspired by Samsung Music -->
+    <path
+        android:fillColor="#E91E63"
+        android:pathData="M68,28L46,28c-2.2,0 -4,1.8 -4,4v42.1c-2.5,-1.9 -5.9,-3.1 -9.5,-3.1c-7.2,0 -13,4.9 -13,11c0,6.1 5.8,11 13,11c7.2,0 13,-4.9 13,-11v-34h18v10c0,2.2 1.8,4 4,4s4,-1.8 4,-4V32C72,29.8 70.2,28 68,28z" />
+</vector>
