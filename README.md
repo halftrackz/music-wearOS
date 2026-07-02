@@ -29,10 +29,14 @@ A sleek, Samsung-inspired media player for Wear OS, built with modern Jetpack Co
 
 To get the best performance, it is highly recommended to build and run the app in **Release Mode**.
 
+---
+
 ### Prerequisites
 * [Android Studio Koala](https://developer.android.com/studio) or newer.
 * Android SDK Platform 30+.
 * A Wear OS device (e.g., Galaxy Watch 4/5/6/7) with **Wireless Debugging** enabled.
+
+---
 
 ### Build Steps
 1. **Clone the repository.**
@@ -44,11 +48,16 @@ To get the best performance, it is highly recommended to build and run the app i
     * Go to **Build > Build Bundle(s) / APK(s) > Build APK(s)**.
     * Once finished, click **Locate** to find your `app-release.apk`.
 
+---
+
 ### Installation
 Connect your watch via ADB and run:
 ```bash
 adb install app-release.apk
 ```
+
+---
+
 ### Adding Music
 This app scans the standard system music folder. To add songs to your watch, use ADB to push your files:
 
@@ -56,7 +65,13 @@ This app scans the standard system music folder. To add songs to your watch, use
 adb push my_song.mp3 /sdcard/Music/
 ```
 After pushing files, open the app and tap the Refresh icon in the Library to update the database.
+
+---
+
 ### 🤝 Contributing
 Contributions are welcome! If you have ideas for new features or performance improvements, feel free to open an issue or submit a pull request.
+
+---
+
 ### 📜 License
 This project is licensed under the GNU General Public License v3.0 (GNU GPLv3) - see the LICENSE file for details.
