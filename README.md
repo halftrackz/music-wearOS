@@ -4,7 +4,8 @@ A sleek, Samsung-inspired media player for Wear OS, built with modern Jetpack Co
 
 ---
 ### DISCLAIMER
-**APP IS IN EARLY ACCESS**
+**APP IS IN EARLY ACCESS -- FEATURES MAY CHANGE**
+* *Note I expect only small UI changes, but I mean I could always overhaul the app (if enough people request it)*
 
 ---
 ## ✨ Features
