@@ -56,6 +56,7 @@ dependencies {
     implementation(libs.media3.session)
     implementation(libs.media3.common)
     implementation(libs.coil.compose)
+    implementation(libs.lifecycle.runtime.compose)
     implementation(libs.ui)
     implementation(libs.ui.graphics)
     implementation(libs.ui.tooling.preview)
