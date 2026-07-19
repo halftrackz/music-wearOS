@@ -73,8 +73,6 @@ chmod +x gradlew
 ```
    *Gradle **should** automatically install, if not download it manually*
 
----
-
 5. **Find the APK, it should be in:**
 ```bash
 /app/build/outputs/apk/release
