@@ -22,7 +22,7 @@ A sleek, Samsung-inspired media player for Wear OS, built with modern Jetpack Co
 
 ## 🚀 Technical Highlights
 
-* **UI Framework:** [Jetpack Compose for Wear OS (Material 3)](https://developer.android.com/jetpack/compose/wear) for a responsive, reactive interface.
+* **UI Framework:** [Jetpack Compose for Wear OS (Material 3)](https://developer.android.com/training/wearables/compose?hl=en&version=3) for a responsive, reactive interface.
 * **Audio Engine:** [Media3 / ExoPlayer](https://developer.android.com/guide/topics/media/media3) for industry-standard background service handling.
 * **Image Loading:** [Coil](https://coil-kt.github.io/coil/) with custom decoders for efficient metadata image extraction.
 * **Performance:** Leverages `ScalingLazyColumn` for high-FPS scrolling on low-power hardware.
