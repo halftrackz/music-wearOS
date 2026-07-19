@@ -58,11 +58,11 @@ To get the best performance, it is highly recommended to build and run the app i
  ```bash
 git clone https//:github.com/halftrackz/music-wearOS
 ```
-3. **Install Android-SDK**
+2. **Install Android-SDK**
 Android-SDK is a major dependency of this project, if you skip this step the app will **not build.**
-4. **Install Java (JDK)**
+3. **Install Java (JDK)**
    Gradle requires a Java Development Kit (JDK). Install a recent JDK, such as: OpenJDK Oracle JDK. If you also skip this step, the app will **not build.**
-5. **Build the project**
+4. **Build the project**
 Simply run gradlew.bat and select release or there will be performance issues, or if you are on Linux/macOS
 ```bash
 chmod +x gradlew
@@ -72,6 +72,9 @@ chmod +x gradlew
 ./gradlew assembleRelease
 ```
    *Gradle **should** automatically install, if not download it manually*
+
+---
+
 5. **Find the APK, it should be in:**
 ```bash
 /app/build/outputs/apk/release
