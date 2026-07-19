@@ -55,12 +55,14 @@ To get the best performance, it is highly recommended to build and run the app i
 ---
 ### Build Steps w/out Android Studio:
 1. **Clone the repo either by downloading here, or by running:**
- ```bash git clone https//:github.com/halftrackz/music-wearOS ```
-2. **Install Android-SDK**
+ ```bash
+git clone https//:github.com/halftrackz/music-wearOS
+```
+3. **Install Android-SDK**
 Android-SDK is a major dependency of this project, if you skip this step the app will **not build.**
-3. **Install Java (JDK)**
+4. **Install Java (JDK)**
    Gradle requires a Java Development Kit (JDK). Install a recent JDK, such as: OpenJDK Oracle JDK. If you also skip this step, the app will **not build.**
-4. **Build the project**
+5. **Build the project**
 Simply run gradlew.bat and select release or there will be performance issues, or if you are on Linux/macOS
 ```bash
 chmod +x gradlew
