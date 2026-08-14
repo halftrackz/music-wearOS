@@ -3,6 +3,7 @@ package com.apk.music.presentation.viewmodel
 import android.content.ComponentName
 import android.content.Context
 import android.media.MediaScannerConnection
+import android.os.Environment
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -72,7 +73,7 @@ class MusicViewModel : ViewModel() {
         _isScanning.value = true
         
         viewModelScope.launch(Dispatchers.IO) {
-            val musicDir = File("/sdcard/Music")
+            val musicDir = File(Environment.getExternalStorageDirectory(), "Music")
             if (musicDir.exists()) {
                 val files = musicDir.listFiles()?.map { it.absolutePath }?.toTypedArray()
                 if (!files.isNullOrEmpty()) {
@@ -99,7 +100,9 @@ class MusicViewModel : ViewModel() {
             val scannedTracks = repository.scanTracks()
             launch(Dispatchers.Main) {
                 _tracks.value = scannedTracks
-                updatePlaylist()
+                if (controller != null) {
+                    updatePlaylist()
+                }
             }
         }
     }
@@ -159,7 +162,6 @@ class MusicViewModel : ViewModel() {
                         progress.value = it.currentPosition.toFloat() / it.duration.toFloat()
                     }
                 }
-                // Update every 2 seconds instead of 1 to save battery
                 delay(2000)
             }
         }

@@ -2,8 +2,10 @@ package com.apk.music.data.repository
 
 import android.content.ContentUris
 import android.content.Context
+import android.os.Environment
 import android.provider.MediaStore
 import com.apk.music.domain.model.Track
+import java.io.File
 
 class TrackRepository(private val context: Context) {
 
@@ -20,7 +22,6 @@ class TrackRepository(private val context: Context) {
             MediaStore.Audio.Media.DATA
         )
 
-        // Filter: Exclude "Over the Horizon" and ensure it's a music file
         val selection = "${MediaStore.Audio.Media.IS_MUSIC} != 0 AND ${MediaStore.Audio.Media.TITLE} NOT LIKE ?"
         val selectionArgs = arrayOf("%Over the Horizon%")
 
@@ -40,10 +41,11 @@ class TrackRepository(private val context: Context) {
             val albumIdColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID)
             val dataColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)
 
+            val musicFolderPath = File(Environment.getExternalStorageDirectory(), "Music").absolutePath
+
             while (cursor.moveToNext()) {
                 val path = cursor.getString(dataColumn)
-                // Optional: Only include files from /sdcard/Music
-                if (!path.contains("/Music/", ignoreCase = true)) continue
+                if (!path.startsWith(musicFolderPath, ignoreCase = true)) continue
 
                 val id = cursor.getLong(idColumn)
                 val title = cursor.getString(titleColumn) ?: "Unknown"
