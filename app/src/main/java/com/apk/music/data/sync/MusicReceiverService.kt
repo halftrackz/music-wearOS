@@ -1,12 +1,17 @@
 package com.apk.music.data.sync
 
+import android.content.Intent
 import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Environment
 import android.util.Log
+import com.apk.music.data.repository.TrackRepository
 import com.google.android.gms.wearable.ChannelClient
+import com.google.android.gms.wearable.MessageEvent
 import com.google.android.gms.wearable.Wearable
 import com.google.android.gms.wearable.WearableListenerService
+import org.json.JSONArray
+import org.json.JSONObject
 import java.io.File
 
 class MusicReceiverService : WearableListenerService() {
@@ -14,6 +19,10 @@ class MusicReceiverService : WearableListenerService() {
     companion object {
         private const val TAG = "MusicReceiverService"
         private const val MUSIC_PATH_PREFIX = "/music_transfer/"
+        const val ACTION_TRACK_RECEIVED = "com.apk.music.ACTION_TRACK_RECEIVED"
+        private const val PATH_REQUEST_TRACK_LIST = "/request_track_list"
+        private const val PATH_TRACK_LIST_RESPONSE = "/track_list_response"
+        private const val PATH_DELETE_TRACK = "/delete_track"
     }
 
     override fun onChannelOpened(channel: ChannelClient.Channel) {
@@ -31,7 +40,6 @@ class MusicReceiverService : WearableListenerService() {
 
             val channelClient = Wearable.getChannelClient(this)
             
-            // receiveFile is asynchronous
             channelClient.receiveFile(channel, Uri.fromFile(targetFile), false)
                 .addOnSuccessListener {
                     Log.d(TAG, "File transfer started: $fileName")
@@ -47,8 +55,47 @@ class MusicReceiverService : WearableListenerService() {
             
             if (targetFile.exists()) {
                 Log.d(TAG, "File transfer complete. Notifying MediaScanner: ${targetFile.name}")
-                // Automatically tell the watch system that a new song has arrived
-                MediaScannerConnection.scanFile(this, arrayOf(targetFile.absolutePath), null) { _, _ -> }
+                MediaScannerConnection.scanFile(this, arrayOf(targetFile.absolutePath), null) { _, _ ->
+                    val intent = Intent(ACTION_TRACK_RECEIVED).setPackage(packageName)
+                    sendBroadcast(intent)
+                }
+            }
+        }
+    }
+
+    override fun onMessageReceived(messageEvent: MessageEvent) {
+        when (messageEvent.path) {
+            PATH_REQUEST_TRACK_LIST -> {
+                val repository = TrackRepository(this)
+                val tracks = repository.scanTracks()
+                val jsonArray = JSONArray()
+                tracks.forEach { track ->
+                    val obj = JSONObject().apply {
+                        put("id", track.id)
+                        put("title", track.title)
+                        put("artist", track.artist)
+                        put("duration", track.duration)
+                    }
+                    jsonArray.put(obj)
+                }
+                val payload = jsonArray.toString().toByteArray(Charsets.UTF_8)
+                Wearable.getMessageClient(this).sendMessage(
+                    messageEvent.sourceNodeId,
+                    PATH_TRACK_LIST_RESPONSE,
+                    payload
+                )
+            }
+            PATH_DELETE_TRACK -> {
+                val fileName = String(messageEvent.data, Charsets.UTF_8)
+                val musicDir = File(Environment.getExternalStorageDirectory(), "Music")
+                val targetFile = File(musicDir, fileName)
+                if (targetFile.exists()) {
+                    targetFile.delete()
+                    MediaScannerConnection.scanFile(this, arrayOf(targetFile.absolutePath), null) { _, _ ->
+                        val intent = Intent(ACTION_TRACK_RECEIVED).setPackage(packageName)
+                        sendBroadcast(intent)
+                    }
+                }
             }
         }
     }

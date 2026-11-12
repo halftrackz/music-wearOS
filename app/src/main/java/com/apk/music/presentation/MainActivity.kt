@@ -27,6 +27,12 @@ import coil.request.CachePolicy
 import com.apk.music.presentation.theme.MusicTheme
 import com.apk.music.presentation.viewmodel.MusicViewModel
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import com.apk.music.data.sync.MusicReceiverService
+
 class MainActivity : ComponentActivity(), ImageLoaderFactory {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,8 +66,21 @@ fun MusicApp() {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
     
-    // Lifecycle Observer for Battery Saving
+    // Lifecycle Observer for Battery Saving & Track Transfer Auto-Refresh
     DisposableEffect(lifecycleOwner) {
+        val receiver = object : BroadcastReceiver() {
+            override fun onReceive(ctx: Context?, intent: Intent?) {
+                musicViewModel.refreshLibrary(context)
+            }
+        }
+        val filter = IntentFilter(MusicReceiverService.ACTION_TRACK_RECEIVED)
+        ContextCompat.registerReceiver(
+            context,
+            receiver,
+            filter,
+            ContextCompat.RECEIVER_NOT_EXPORTED
+        )
+
         val observer = LifecycleEventObserver { _, event ->
             when (event) {
                 Lifecycle.Event.ON_RESUME -> musicViewModel.onForegroundChanged(true)
@@ -72,6 +91,9 @@ fun MusicApp() {
         lifecycleOwner.lifecycle.addObserver(observer)
         onDispose {
             lifecycleOwner.lifecycle.removeObserver(observer)
+            try {
+                context.unregisterReceiver(receiver)
+            } catch (_: Exception) {}
         }
     }
 

@@ -59,7 +59,8 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="com.google.android.gms.wearable.CHANNEL_EVENT" />
-                <data android:scheme="wear" android:host="*" android:pathPrefix="/music_transfer/" />
+                <action android:name="com.google.android.gms.wearable.MESSAGE_EVENT" />
+                <data android:scheme="wear" android:host="*" android:pathPrefix="/" />
             </intent-filter>
         </service>
     </application>
