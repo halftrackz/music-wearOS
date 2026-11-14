@@ -1,6 +1,10 @@
 package com.apk.music.presentation
 
 import android.Manifest
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -26,12 +30,6 @@ import coil.memory.MemoryCache
 import coil.request.CachePolicy
 import com.apk.music.presentation.theme.MusicTheme
 import com.apk.music.presentation.viewmodel.MusicViewModel
-
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
-import com.apk.music.data.sync.MusicReceiverService
 
 class MainActivity : ComponentActivity(), ImageLoaderFactory {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,7 +63,7 @@ fun MusicApp() {
     val musicViewModel: MusicViewModel = viewModel()
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
-    
+
     // Lifecycle Observer for Battery Saving & Track Transfer Auto-Refresh
     DisposableEffect(lifecycleOwner) {
         val receiver = object : BroadcastReceiver() {
@@ -73,7 +71,7 @@ fun MusicApp() {
                 musicViewModel.refreshLibrary(context)
             }
         }
-        val filter = IntentFilter(MusicReceiverService.ACTION_TRACK_RECEIVED)
+        val filter = IntentFilter("com.apk.music.TRACK_RECEIVED")
         ContextCompat.registerReceiver(
             context,
             receiver,
@@ -135,7 +133,7 @@ fun MusicApp() {
                 composable("library") {
                     val tracks by musicViewModel.tracksState
                     val isScanning by musicViewModel.isScanningState
-                    
+
                     LibraryScreen(
                         tracks = tracks,
                         isScanning = isScanning,
@@ -154,7 +152,7 @@ fun MusicApp() {
                     val artworkUri by musicViewModel.coverArtUri
                     val isPlaying by musicViewModel.isPlaying
                     val isShuffleEnabled by musicViewModel.isShuffleEnabled
-                    
+
                     NowPlayingScreen(
                         title = title,
                         artist = artist,
